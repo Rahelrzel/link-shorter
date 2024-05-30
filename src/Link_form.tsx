@@ -1,10 +1,11 @@
 import { ArrowForwardIcon, CopyIcon } from "@chakra-ui/icons";
-import { Card, Flex, IconButton, Input } from "@chakra-ui/react";
-import axios from "axios";
+import { Card, Flex, IconButton, Input, useToast } from "@chakra-ui/react";
+import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { axiosClient } from "./config";
 
 function LinkForm() {
+  const toast = useToast();
   const [isLoading, setLoading] = useState(false);
   const [longLink, setLongLink] = useState("");
   const [shortLink, setShortLink] = useState("");
@@ -12,12 +13,41 @@ function LinkForm() {
   const handlesubmit = async () => {
     setLoading(true);
     const response = await axiosClient
-      .post("https://api-ssl.bitly.com/v4/shorten", { long_url: longLink })
+      .post("https://url-shortener-service.p.rapidapi.com/shorten", {
+        url: longLink,
+      })
       .then((res) => res.data)
+      .catch((err) => {
+        let disc;
+        if (err instanceof AxiosError) {
+          disc = err.response?.data.error;
+        }
+        toast({
+          title: "Unable to generate short link",
+          status: "error",
+          position: "top-right",
+          isClosable: true,
+          description: disc,
+        });
+      })
       .finally(() => setLoading(false));
 
-    setShortLink(response["link"]);
+    setShortLink(response["result_url"]);
   };
+  const copy = async () => {
+    if (!navigator.clipboard) {
+      return;
+    }
+    navigator.clipboard.writeText(shortLink).then(
+      function () {
+        console.log("Async: Copying to clipboard was successful!");
+      },
+      function (err) {
+        console.error("Async: Could not copy text: ", err);
+      }
+    );
+  };
+
   return (
     <Card padding={"7"} bg={"purple.700"} gap={"5"} width={"500px"}>
       <Flex direction={"row"} gap={"3"}>
@@ -46,6 +76,7 @@ function LinkForm() {
           value={shortLink}
         />
         <IconButton
+          onClick={copy}
           icon={<CopyIcon />}
           aria-label="copy"
           colorScheme="white"
