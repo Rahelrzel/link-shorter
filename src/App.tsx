@@ -15,7 +15,7 @@ function App() {
         boxShadow={"2xl"}
         borderRadius={"xl"}
       >
-        <Text fontSize={"30"} fontFamily={"sans-serif"} padding={12}>
+        <Text fontSize={"40"} fontFamily={"sans-serif"} padding={2}>
           LINK SHORTER
         </Text>
         <LinkForm></LinkForm>
