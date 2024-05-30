@@ -3,12 +3,14 @@ import { Card, Flex, IconButton, Input, useToast } from "@chakra-ui/react";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { axiosClient } from "./config";
+import ConfettiExplosion from "react-confetti-explosion";
 
 function LinkForm() {
   const toast = useToast();
   const [isLoading, setLoading] = useState(false);
   const [longLink, setLongLink] = useState("");
   const [shortLink, setShortLink] = useState("");
+  const [isExploding, setIsExploding] = useState(false);
 
   const handlesubmit = async () => {
     setLoading(true);
@@ -40,7 +42,7 @@ function LinkForm() {
     }
     navigator.clipboard.writeText(shortLink).then(
       function () {
-        console.log("Async: Copying to clipboard was successful!");
+        setIsExploding(true);
       },
       function (err) {
         console.error("Async: Could not copy text: ", err);
@@ -75,6 +77,7 @@ function LinkForm() {
           borderColor={"white"}
           value={shortLink}
         />
+        {isExploding && <ConfettiExplosion />}
         <IconButton
           onClick={copy}
           icon={<CopyIcon />}
