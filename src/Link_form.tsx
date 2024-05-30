@@ -1,7 +1,7 @@
 import { ArrowForwardIcon, CopyIcon } from "@chakra-ui/icons";
 import { Card, Flex, IconButton, Input, useToast } from "@chakra-ui/react";
-import axios, { AxiosError } from "axios";
-import { useEffect, useState } from "react";
+import { AxiosError } from "axios";
+import { useState } from "react";
 import { axiosClient } from "./config";
 
 function LinkForm() {
