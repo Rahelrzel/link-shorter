@@ -60,6 +60,7 @@ function LinkForm() {
 
     setShortLink(response["result_url"]);
   };
+
   const copy = async () => {
     if (!navigator.clipboard) {
       return;
@@ -78,7 +79,12 @@ function LinkForm() {
   };
 
   return (
-    <Card padding={"7"} bg={"purple.700"} gap={"5"} width={"500px"}>
+    <Card
+      padding={{ base: "4", md: "7" }}
+      bg="purple.700"
+      gap="5"
+      width={{ base: "100%", md: "500px" }}
+    >
       <Flex direction={"row"} gap={"3"}>
         <Input
           placeholder="Enter your link here"
@@ -126,15 +132,18 @@ function LinkForm() {
         justifySelf={"center"}
         align={"center"}
       >
-        <Button
-          variant="outline"
-          colorScheme="white"
-          onClick={handleButtonClick}
-          disabled={!shortLink}
-        >
-          Generat QRCode
-        </Button>
-        {showQRCode && <QRCodeSVG value={shortLink} />}
+        {shortLink && (
+          <Button
+            variant="outline"
+            colorScheme="white"
+            onClick={handleButtonClick}
+            disabled={!shortLink}
+          >
+            Generat QRCode
+          </Button>
+        )}
+
+        {showQRCode && <QRCodeSVG color="purple" value={shortLink} />}
       </Flex>
     </Card>
   );
