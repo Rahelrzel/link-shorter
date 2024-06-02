@@ -1,5 +1,5 @@
 import "./App.css";
-import { Box, Card, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import LinkForm from "./Link_form";
 
 function App() {
